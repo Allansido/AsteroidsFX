@@ -1,10 +1,10 @@
 package dk.sdu.mmmi.cbse.enemysystem;
 
-import dk.sdu.mmmi.cbse.common.bullet.Bullet;
 import dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.enemy.Enemy;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 
 import java.util.Collection;
@@ -76,7 +76,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
             }
 
             // Random shooting logic
-            if (random.nextDouble() < 0.03) { // 3% chance to shoot
+            if (random.nextDouble() < 0.01) { // 1% chance to shoot
                 getBulletSPIs().stream().findFirst().ifPresent(
                         spi -> world.addEntity(spi.createBullet(enemy, gameData))
                 );
