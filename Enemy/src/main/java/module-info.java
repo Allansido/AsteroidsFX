@@ -7,6 +7,7 @@ module Enemy {
     requires Common;
     requires CommonBullet;
     requires java.desktop;
+    requires CommonEnemy;
     uses dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
     provides IGamePluginService with EnemyPlugin;
     provides IEntityProcessingService with EnemyControlSystem;

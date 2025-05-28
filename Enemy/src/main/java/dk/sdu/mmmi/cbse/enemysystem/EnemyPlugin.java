@@ -3,6 +3,7 @@ package dk.sdu.mmmi.cbse.enemysystem;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.enemy.Enemy;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 
 import java.util.Random;
@@ -28,6 +29,7 @@ public class EnemyPlugin implements IGamePluginService {
         enemy.setX(randomX);
         enemy.setY(randomY);
         enemy.setRadius(8);
+        enemy.setHealth(3);
         return enemy;
     }
 
