@@ -5,6 +5,10 @@ import dk.sdu.mmmi.cbse.common.asteroids.IAsteroidSplitter;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.World;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import java.net.URL;
+
 /**
  *
  * @author corfixen
@@ -13,7 +17,6 @@ public class AsteroidSplitterImpl implements IAsteroidSplitter {
 
     @Override
     public void createSplitAsteroid(Entity e, World world) {
-        System.out.println("Trying to split asteroid.");
 
         Entity frag1 = createFragment(e.getRotation() + 35, e.getRadius(), e.getHealth(), e.getX(), e.getY());
         Entity frag2 = createFragment(e.getRotation() - 35, e.getRadius(), e.getHealth(), e.getX(), e.getY());
@@ -29,7 +32,6 @@ public class AsteroidSplitterImpl implements IAsteroidSplitter {
         float newSize = originalSize / 1.5f;
 
         if (newSize < 10) {
-            System.out.println("Too small to split.");
             return null;
         }
 
@@ -41,6 +43,26 @@ public class AsteroidSplitterImpl implements IAsteroidSplitter {
         asteroid.setRotation(rotation);
         asteroid.setHealth(3); // reset health for split fragments
         asteroid.setMoveSpeed(100);
+
+        try {
+            URL imageUrl = getClass().getResource("/asteroid.png");
+            if (imageUrl != null) {
+                Image image = new Image(imageUrl.toString());
+                ImageView imageView = new ImageView(image);
+
+                double imageSize = newSize * 2; // Diameter
+                imageView.setFitWidth(imageSize);
+                imageView.setFitHeight(imageSize);
+                imageView.setPreserveRatio(true);
+
+                asteroid.setImageView(imageView);
+            } else {
+                System.out.println("No asteroid image found for fragment.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return asteroid;
     }
 

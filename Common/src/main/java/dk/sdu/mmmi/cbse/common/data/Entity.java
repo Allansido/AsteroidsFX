@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.cbse.common.data;
 
-import java.awt.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ public class Entity implements Serializable {
     private Color color;
     private int health;
     private int moveSpeed;
-    private int turnSpeed;
+    private ImageView imageView;
             
 
     public String getID() {
@@ -66,12 +67,12 @@ public class Entity implements Serializable {
         return this.radius;
     }
 
-    public Color getColor() {
-        return color == null ? color = Color.BLACK : color;
-    }
-
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     public int getHealth() {
@@ -90,11 +91,11 @@ public class Entity implements Serializable {
         this.moveSpeed = moveSpeed;
     }
 
-    public int getTurnSpeed() {
-        return turnSpeed;
+    public ImageView getImageView() {
+        return imageView;
     }
 
-    public void setTurnSpeed(int turnSpeed) {
-        this.turnSpeed = turnSpeed;
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
     }
 }
