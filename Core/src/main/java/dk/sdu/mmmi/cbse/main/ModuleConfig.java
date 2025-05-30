@@ -1,8 +1,11 @@
 package dk.sdu.mmmi.cbse.main;
 
+import dk.sdu.mmmi.cbse.common.map.MapSPI;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.ServiceLoader;
 import static java.util.stream.Collectors.toList;
@@ -21,7 +24,7 @@ class ModuleConfig {
 
     @Bean
     public Game game(){
-        return new Game(gamePluginServices(), entityProcessingServiceList(), postEntityProcessingServices());
+        return new Game(gamePluginServices(), entityProcessingServiceList(), postEntityProcessingServices(), (List<MapSPI>) getMapServices());
     }
 
     @Bean
@@ -37,5 +40,10 @@ class ModuleConfig {
     @Bean
     public List<IPostEntityProcessingService> postEntityProcessingServices() {
         return ServiceLoader.load(IPostEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+    }
+
+    @Bean
+    public Collection<MapSPI> getMapServices() {
+        return ServiceLoader.load(MapSPI.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 }

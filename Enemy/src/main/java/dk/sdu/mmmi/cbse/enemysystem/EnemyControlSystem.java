@@ -76,7 +76,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
             }
 
             // Random shooting logic
-            if (random.nextDouble() < 0.01) { // 1% chance to shoot
+            if (random.nextDouble() < 0.03) { // 1% chance to shoot
                 getBulletSPIs().stream().findFirst().ifPresent(
                         spi -> world.addEntity(spi.createBullet(enemy, gameData))
                 );

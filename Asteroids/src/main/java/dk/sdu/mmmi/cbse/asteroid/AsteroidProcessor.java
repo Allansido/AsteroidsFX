@@ -17,13 +17,10 @@ public class AsteroidProcessor implements IEntityProcessingService {
         for (Entity asteroid : world.getEntities(Asteroid.class)) {
 
             if (((Asteroid) asteroid).isHit()) {
-                System.out.println("Asteroid hit.");
                 asteroid.setHealth(asteroid.getHealth() - 1); // Decrement health
-                System.out.println("Asteroid health: " + asteroid.getHealth());
                 ((Asteroid) asteroid).setHit(false);
 
                 if (asteroid.getHealth() <= 0) {
-                    System.out.println("Trying to split asteroid.");
                     if (asteroidSplitter != null) {
                         asteroidSplitter.createSplitAsteroid(asteroid, world);
                     } else {
