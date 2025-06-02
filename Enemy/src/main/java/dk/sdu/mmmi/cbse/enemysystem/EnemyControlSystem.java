@@ -16,6 +16,19 @@ import static java.util.stream.Collectors.toList;
 public class EnemyControlSystem implements IEntityProcessingService {
 
     private final Random random = new Random();
+    private final Collection<BulletSPI> bulletSPIs;
+
+    // ✅ Default constructor for module system (ServiceLoader)
+    public EnemyControlSystem() {
+        this(ServiceLoader.load(BulletSPI.class).stream()
+                .map(ServiceLoader.Provider::get)
+                .collect(toList()));
+    }
+
+    // ✅ Testable constructor (used in unit tests)
+    public EnemyControlSystem(Collection<BulletSPI> bulletSPIs) {
+        this.bulletSPIs = bulletSPIs;
+    }
 
     @Override
     public void process(GameData gameData, World world) {
@@ -28,14 +41,12 @@ public class EnemyControlSystem implements IEntityProcessingService {
             double deltaY = centerY - enemy.getY();
             double distanceToCenter = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-
             if (distanceToCenter > minDistanceToCenter) {
                 float targetAngle = (float) Math.toDegrees(Math.atan2(deltaY, deltaX));
 
                 double currentAngle = enemy.getRotation();
                 double rotationSpeed = 2f;
                 double angleDifference = targetAngle - currentAngle;
-
                 angleDifference = (angleDifference + 180) % 360 - 180;
 
                 if (Math.abs(angleDifference) < rotationSpeed) {
@@ -45,7 +56,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 }
                 enemy.setRotation(currentAngle);
             } else {
-                double randomRotation = random.nextDouble() * 20 - 5; // Random value between -5 and 5
+                double randomRotation = random.nextDouble() * 20 - 5;
                 enemy.setRotation(enemy.getRotation() + randomRotation);
             }
 
@@ -54,28 +65,16 @@ public class EnemyControlSystem implements IEntityProcessingService {
             enemy.setX(enemy.getX() + changeX);
             enemy.setY(enemy.getY() + changeY);
 
-            if (enemy.getX() < 0) {
-                enemy.setX(1);
-            }
-            if (enemy.getX() > gameData.getDisplayWidth()) {
-                enemy.setX(gameData.getDisplayWidth() - 1);
-            }
-            if (enemy.getY() < 0) {
-                enemy.setY(1);
-            }
-            if (enemy.getY() > gameData.getDisplayHeight()) {
-                enemy.setY(gameData.getDisplayHeight() - 1);
-            }
+            if (enemy.getX() < 0) enemy.setX(1);
+            if (enemy.getX() > gameData.getDisplayWidth()) enemy.setX(gameData.getDisplayWidth() - 1);
+            if (enemy.getY() < 0) enemy.setY(1);
+            if (enemy.getY() > gameData.getDisplayHeight()) enemy.setY(gameData.getDisplayHeight() - 1);
 
-            if (random.nextDouble() < 0.03) { // 3% chance to shoot
-                getBulletSPIs().stream().findFirst().ifPresent(
+            if (random.nextDouble() < 0.03) {
+                bulletSPIs.stream().findFirst().ifPresent(
                         spi -> world.addEntity(spi.createBullet(enemy, gameData))
                 );
             }
         }
-    }
-
-    private Collection<? extends BulletSPI> getBulletSPIs() {
-        return ServiceLoader.load(BulletSPI.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 }
