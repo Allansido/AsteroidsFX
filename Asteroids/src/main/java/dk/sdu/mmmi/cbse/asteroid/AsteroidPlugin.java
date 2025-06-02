@@ -53,6 +53,7 @@ public class AsteroidPlugin implements IGamePluginService  {
         asteroid.setHealth(3);
         asteroid.setMoveSpeed(100);
         asteroid.setRotation(rnd.nextInt(360));
+        asteroid.setType("Asteroid");
 
         try {
             URL imageUrl = getClass().getResource("/asteroid.png");

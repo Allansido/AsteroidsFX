@@ -24,26 +24,37 @@ class ModuleConfig {
 
     @Bean
     public Game game(){
-        return new Game(gamePluginServices(), entityProcessingServiceList(), postEntityProcessingServices(), (List<MapSPI>) getMapServices());
+        return new Game(gamePluginServices(),
+                entityProcessingServiceList(),
+                postEntityProcessingServices(),
+                (List<MapSPI>) getMapServices());
     }
 
     @Bean
     public List<IEntityProcessingService> entityProcessingServiceList(){
-        return ServiceLoader.load(IEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+        return ServiceLoader.load(IEntityProcessingService.class)
+                .stream().map(ServiceLoader.Provider::get)
+                .collect(toList());
     }
 
     @Bean
     public List<IGamePluginService> gamePluginServices() {
-        return ServiceLoader.load(IGamePluginService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+        return ServiceLoader.load(IGamePluginService.class)
+                .stream().map(ServiceLoader.Provider::get)
+                .collect(toList());
     }
 
     @Bean
     public List<IPostEntityProcessingService> postEntityProcessingServices() {
-        return ServiceLoader.load(IPostEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+        return ServiceLoader.load(IPostEntityProcessingService.class)
+                .stream().map(ServiceLoader.Provider::get)
+                .collect(toList());
     }
 
     @Bean
     public Collection<MapSPI> getMapServices() {
-        return ServiceLoader.load(MapSPI.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+        return ServiceLoader.load(MapSPI.class)
+                .stream().map(ServiceLoader.Provider::get)
+                .collect(toList());
     }
 }

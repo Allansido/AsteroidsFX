@@ -43,7 +43,13 @@ class Game {
     private final List<IPostEntityProcessingService> postEntityProcessingServices;
     private final List<MapSPI> mapServices;
 
-    Game(List<IGamePluginService> gamePluginServices, List<IEntityProcessingService> entityProcessingServiceList, List<IPostEntityProcessingService> postEntityProcessingServices, List<MapSPI> mapServices) {
+    private int destroyedAsteroids = 0;
+    private final Text scoreText = new Text(10, 20, "Destroyed asteroids: 0");
+
+    Game(List<IGamePluginService> gamePluginServices,
+         List<IEntityProcessingService> entityProcessingServiceList,
+         List<IPostEntityProcessingService> postEntityProcessingServices,
+         List<MapSPI> mapServices) {
         this.gamePluginServices = gamePluginServices;
         this.entityProcessingServiceList = entityProcessingServiceList;
         this.postEntityProcessingServices = postEntityProcessingServices;
@@ -90,16 +96,24 @@ class Game {
             iGamePlugin.start(gameData, world);
         }
 
-        getMapServices().stream().findFirst().ifPresent(SPI -> {
-            ImageView mapView = SPI.getMap();
-            gameWindow.getChildren().add(mapView);
-        });
 
         for (Entity entity : world.getEntities()) {
             Polygon polygon = new Polygon(entity.getPolygonCoordinates());
             polygons.put(entity, polygon);
             gameWindow.getChildren().add(polygon);
         }
+
+        getMapServices().stream().findFirst().ifPresent(SPI -> {
+            ImageView mapView = SPI.getMap();
+            gameWindow.getChildren().add(mapView);
+        });
+
+        // Ensure scoreText stays on top
+        scoreText.setFill(Color.WHITE);
+        scoreText.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, black, 3, 0, 1, 1);");
+        gameWindow.getChildren().add(scoreText);
+        scoreText.toFront();
+
         window.setScene(scene);
         window.setTitle("ASTEROIDS");
         window.show();
@@ -124,12 +138,19 @@ class Game {
         for (IPostEntityProcessingService postEntityProcessorService : getPostEntityProcessingServices()) {
             postEntityProcessorService.process(gameData, world);
         }
+
+
     }
 
     private void draw() {
-        // Remove old entities no longer in the world
         for (Entity polygonEntity : polygons.keySet()) {
             if (!world.getEntities().contains(polygonEntity)) {
+                if (polygonEntity.getClass().getSimpleName().equals("Asteroid")) {
+                    destroyedAsteroids++;
+                    scoreText.setText("Destroyed asteroids: " + destroyedAsteroids);
+                }
+
+
                 Polygon removedPolygon = polygons.get(polygonEntity);
                 polygons.remove(polygonEntity);
                 gameWindow.getChildren().remove(removedPolygon);

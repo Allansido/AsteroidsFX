@@ -15,13 +15,13 @@ public class PlayerPlugin implements IGamePluginService {
     private Entity player;
 
     public PlayerPlugin() {
+
     }
 
     @Override
     public void start(GameData gameData, World world) {
         player = createPlayerShip(gameData);
         world.addEntity(player);
-        System.out.println("PlayerPlugin started at X: " + player.getX() + ", Y: " + player.getY());
     }
 
     private Entity createPlayerShip(GameData gameData) {
