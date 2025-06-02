@@ -3,6 +3,8 @@ package dk.sdu.mmmi.cbse.common.data;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class Entity implements Serializable {
@@ -18,6 +20,8 @@ public class Entity implements Serializable {
     private int health;
     private int moveSpeed;
     private ImageView imageView;
+    private Map<String, Object> properties = new HashMap<>();
+    private String type;
             
 
     public String getID() {
@@ -97,5 +101,21 @@ public class Entity implements Serializable {
 
     public void setImageView(ImageView imageView) {
         this.imageView = imageView;
+    }
+
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperty(String key, Object value) {
+        properties.put(key, value);
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

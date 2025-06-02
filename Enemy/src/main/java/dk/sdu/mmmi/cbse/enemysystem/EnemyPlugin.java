@@ -12,14 +12,14 @@ import java.net.URL;
 import java.util.Random;
 
 public class EnemyPlugin implements IGamePluginService {
-    Entity enemy;
     private final Random random = new Random();
 
     @Override
     public void start(GameData gameData, World world) {
-        enemy = createEnemy(gameData);
-        world.addEntity(enemy);
-        System.out.println("EnemyPlugin started at X: " + enemy.getX() + ", Y: " + enemy.getY());
+        for (int i = 0; i < 3; i++) {
+            Entity enemy = createEnemy(gameData);
+            world.addEntity(enemy);
+        }
     }
 
     public Entity createEnemy(GameData gameData) {
@@ -39,10 +39,10 @@ public class EnemyPlugin implements IGamePluginService {
                 Image image = new Image(imageUrl.toString());
                 ImageView imageView = new ImageView(image);
 
-                double ImageSize = enemy.getRadius() * 4; // Diameter
+                double ImageSize = enemy.getRadius() * 4;
                 imageView.setFitWidth(ImageSize);
                 imageView.setFitHeight(ImageSize);
-                imageView.setPreserveRatio(true); // Keep aspect ratio
+                imageView.setPreserveRatio(true);
 
                 enemy.setImageView(imageView);
             } else {
@@ -54,7 +54,6 @@ public class EnemyPlugin implements IGamePluginService {
 
         return enemy;
     }
-
 
     @Override
     public void stop(GameData gameData, World world) {

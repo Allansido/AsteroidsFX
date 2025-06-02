@@ -8,6 +8,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.net.URL;
+import java.util.Collection;
+import java.util.ServiceLoader;
+
+import static java.util.stream.Collectors.toList;
 
 
 public class MapPlugin implements IGamePluginService, MapSPI {
