@@ -1,4 +1,6 @@
 module Common {
+    requires java.desktop;
+    requires javafx.graphics;
     exports dk.sdu.mmmi.cbse.common.services;
     exports dk.sdu.mmmi.cbse.common.data;
     exports dk.sdu.mmmi.cbse.common.util;
